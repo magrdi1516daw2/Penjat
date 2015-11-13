@@ -10,9 +10,8 @@
 //si no existeix 'paraula' la crea     
 if(!isset($_SESSION['paraula'])){
 	$_SESSION['paraula'] = array();
-	$_SESSION['paraules'] = $_SESSION['arxiu'];
-	$num_paraules = count($_SESSION['paraules']);
-	$_SESSION['paraula'] = $_SESSION['paraules'][rand(0,$num_paraules)];
+	$num_paraules = count($_SESSION['arxiu']);
+	$_SESSION['paraula'] = $_SESSION['arxiu'][rand(0,$num_paraules)];
 	echo $_SESSION['paraula'];
 	//print_r($_SESSION['paraula']);
 	echo '<br>';
@@ -27,19 +26,26 @@ if(!isset($_SESSION['hidden'])){
 		for($i=0;$i<strlen($_SESSION['paraula']);$i++){
 		 $_SESSION['hidden'][$i] = ' _ ';
 		 }  
+		 //print_r($_SESSION['hidden']);
   }
     else {
-    echo 'NO CREA '.$_SESSION['hidden'].'<br>'; 
-    }
+    //echo 'NO CREA '.$_SESSION['hidden'].'<br>'; 
+    //print_r($_SESSION['hidden']);
+    		for($i=0;$i<strlen($_SESSION['paraula']);$i++){
+			$_SESSION['hidden'][$i] = ' _ ';
+			}  
+			print_r($_SESSION['hidden']);
+      }
  
   
   //array lletres
   if(!isset($_SESSION['lletres'])){
 	 $_SESSION['lletres'] = array();
-	 array_push($_SESSION['lletres'],$GET["lletra"]);     
+	 array_push($_SESSION['lletres'],$_GET["lletra"]);     
   }else{
-	 array_push($_SESSION['lletres'],$GET["lletra"]); 
+	 array_push($_SESSION['lletres'],$_GET["lletra"]); 
 	  }
+	 print_r($_SESSION['lletres']);
 	  
  if(!isset($_SESSION['intents'])){
 	  $_SESSION['intents'] = 0;
@@ -47,7 +53,7 @@ if(!isset($_SESSION['hidden'])){
   	   for($i=0;$i<strlen($_SESSION['paraula']);$i++){
 			if($_GET["lletra"] == $_SESSION['paraula'][$i]){
 				//si coincideix mira si ja esta posada al seu lloc a la paraula amagada
-				$_SESSION['hidden'[$i]] = $_GET["lletra"];
+				$_SESSION['hidden'][$i] = $_GET["lletra"];
 				}
 				else{
 				//cada cop que entra una lletra que ja esta dita augmenten els intents
