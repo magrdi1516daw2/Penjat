@@ -1,6 +1,5 @@
 <?PHP
   session_start();
-  include 'Partida.php';
   $_SESSION['arxiu'] = array("cotxe","patata","boligraf");
   
 //acció del botó nou joc - reseteja les variables de sessio  
@@ -11,9 +10,9 @@
 //si no existeix 'paraula' la crea     
 if(!isset($_SESSION['paraula'])){
 	$_SESSION['paraula'] = array();
-	$paraules = $_SESSION['arxiu'];
-	$num_paraules = count($paraules);
-	$_SESSION['paraula'] = $paraules[rand(0,$num_paraules)];
+	$_SESSION['paraules'] = $_SESSION['arxiu'];
+	$num_paraules = count($_SESSION['paraules']);
+	$_SESSION['paraula'] = $_SESSION['paraules'][rand(0,$num_paraules)];
 	echo $_SESSION['paraula'];
 	//print_r($_SESSION['paraula']);
 	echo '<br>';
@@ -26,7 +25,7 @@ if(!isset($_SESSION['paraula'])){
 if(!isset($_SESSION['hidden'])){
 	$_SESSION['hidden'] = array();
 		for($i=0;$i<strlen($_SESSION['paraula']);$i++){
-		 $_SESSION['hidden'[$i]] = ' _ ';
+		 $_SESSION['hidden'][$i] = ' _ ';
 		 }  
   }
     else {
@@ -46,7 +45,7 @@ if(!isset($_SESSION['hidden'])){
 	  $_SESSION['intents'] = 0;
   }
   	   for($i=0;$i<strlen($_SESSION['paraula']);$i++){
-			if($_GET["lletra"] == $_SESSION['paraula'[$i]]){
+			if($_GET["lletra"] == $_SESSION['paraula'][$i]){
 				//si coincideix mira si ja esta posada al seu lloc a la paraula amagada
 				$_SESSION['hidden'[$i]] = $_GET["lletra"];
 				}
@@ -58,8 +57,9 @@ if(!isset($_SESSION['hidden'])){
 
 		echo implode($_SESSION['hidden']).'</br>';
 		echo 'Intents: '.$_SESSION['intents'];
-?>
 
+
+?>
 <html>
 
 <head><title>sessions</title></head>
