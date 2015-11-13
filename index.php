@@ -1,6 +1,7 @@
 <?PHP
   session_start();
   include 'Partida.php';
+  $_SESSION['arxiu'] = array("cotxe","patata","boligraf");
   
 //acció del botó nou joc - reseteja les variables de sessio  
   if($_GET['reset']){
@@ -10,7 +11,9 @@
 //si no existeix 'paraula' la crea     
 if(!isset($_SESSION['paraula'])){
 	$_SESSION['paraula'] = array();
-	$_SESSION['paraula'] = buscarParaula($_SESSION['arxiu']);
+	$paraules = $_SESSION['arxiu'];
+	$num_paraules = count($paraules);
+	$_SESSION['paraula'] = $paraules[rand(0,$num_paraules)];
 	echo $_SESSION['paraula'];
 	//print_r($_SESSION['paraula']);
 	echo '<br>';
@@ -21,7 +24,10 @@ if(!isset($_SESSION['paraula'])){
 
  //si no existeix 'hidden' la crea     
 if(!isset($_SESSION['hidden'])){
-  $_SESSION['hidden'] = creaHidden($_SESSION['paraula']); 
+	$_SESSION['hidden'] = array();
+		for($i=0;$i<strlen($_SESSION['paraula']);$i++){
+		 $_SESSION['hidden'[$i]] = ' _ ';
+		 }  
   }
     else {
     echo 'NO CREA '.$_SESSION['hidden'].'<br>'; 
@@ -30,19 +36,28 @@ if(!isset($_SESSION['hidden'])){
   
   //array lletres
   if(!isset($_SESSION['lletres'])){
-	  $_SESSION['lletres'] = array();
-		guardarLletra($_SESSION['lletres']);    
+	 $_SESSION['lletres'] = array();
+	 array_push($_SESSION['lletres'],$GET["lletra"]);     
   }else{
-	  guardarLletra($_SESSION['lletres']);
+	 array_push($_SESSION['lletres'],$GET["lletra"]); 
 	  }
 	  
  if(!isset($_SESSION['intents'])){
 	  $_SESSION['intents'] = 0;
-	  comprovarLletra($_SESSION['paraula'], $_SESSION['hidden'],$_SESSION['intents']);
-  }else{
-	comprovarLletra($_SESSION['paraula'], $_SESSION['hidden'],$_SESSION['intents']);
-}
+  }
+  	   for($i=0;$i<strlen($_SESSION['paraula']);$i++){
+			if($_GET["lletra"] == $_SESSION['paraula'[$i]]){
+				//si coincideix mira si ja esta posada al seu lloc a la paraula amagada
+				$_SESSION['hidden'[$i]] = $_GET["lletra"];
+				}
+				else{
+				//cada cop que entra una lletra que ja esta dita augmenten els intents
+				}
+			}
+		$_SESSION['intents']++;
 
+		echo implode($_SESSION['hidden']).'</br>';
+		echo 'Intents: '.$_SESSION['intents'];
 ?>
 
 <html>
