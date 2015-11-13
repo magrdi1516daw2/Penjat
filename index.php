@@ -26,15 +26,12 @@ if(!isset($_SESSION['hidden'])){
 		for($i=0;$i<strlen($_SESSION['paraula']);$i++){
 		 $_SESSION['hidden'][$i] = ' _ ';
 		 }  
-		 //print_r($_SESSION['hidden']);
+		 //print_r($_SESSION['hidden']); echo '<br>';
   }
     else {
     //echo 'NO CREA '.$_SESSION['hidden'].'<br>'; 
     //print_r($_SESSION['hidden']);
-    		for($i=0;$i<strlen($_SESSION['paraula']);$i++){
-			$_SESSION['hidden'][$i] = ' _ ';
-			}  
-			print_r($_SESSION['hidden']);
+	print_r($_SESSION['hidden']); echo '<br>';
       }
  
   
@@ -45,7 +42,7 @@ if(!isset($_SESSION['hidden'])){
   }else{
 	 array_push($_SESSION['lletres'],$_GET["lletra"]); 
 	  }
-	 print_r($_SESSION['lletres']);
+	 print_r($_SESSION['lletres']);echo '<br>';
 	  
  if(!isset($_SESSION['intents'])){
 	  $_SESSION['intents'] = 0;
@@ -56,13 +53,20 @@ if(!isset($_SESSION['hidden'])){
 				$_SESSION['hidden'][$i] = $_GET["lletra"];
 				}
 				else{
-				//cada cop que entra una lletra que ja esta dita augmenten els intents
+				if($_SESSION['hidden'][$i] != $_SESSION['paraula'][$i]){
+					 $_SESSION['hidden'][$i] = ' _ ';
+					 }
+					 //cada cop que entra una lletra que ja esta dita augmenten els intents
 				}
 			}
 		$_SESSION['intents']++;
 
-		echo implode($_SESSION['hidden']).'</br>';
+		echo implode($_SESSION['hidden']); echo '</br>';
 		echo 'Intents: '.$_SESSION['intents'];
+		
+		if($_SESSION['hidden'] == $_SESSION['paraula']){
+			echo 'Has guanyat!';
+			}
 
 
 ?>
