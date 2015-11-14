@@ -1,51 +1,67 @@
 <?php 
+class Partida {
+	public $hidden;
+	public $paraula;
+	public $intents;
+	public $lletra;
+	public $lletres;
+        
+	function __construct() {
+           $this->buscarParaula();
+            $this->intents = 0;
+            
+                    }
 
-  	$_SESSION['arxiu'] = array("cotxe","patata","boligraf");
-  	
-	function buscarParaula($paraules){
-		$paraules = $_SESSION['arxiu'];
-		$num_paraules = count($paraules);
-
-		return $paraules[rand(0,$num_paraules)];
+        
+ 	public function buscarParaula(){
+		$arxiu = fopen('paraules.txt','r') or die ('error lectura');
+		$i=0;
+		while(!feof($arxiu)){
+			$linies[$i] = fgets($arxiu);
+			$i++;
+		}
+		array_pop($linies);
+		$this->paraula = $linies[rand(0,count($linies)-1)];
+		fclose($arxiu);
+		//crea hidden a partir de la paraula
+  		for($i=0;$i<strlen($this->paraula);$i++){
+			$this->hidden[$i] = ' _ ';
+		} 
+		array_pop($this->hidden);  
+		$this->paraula = str_split($this->paraula);
+		echo implode($this->paraula);
+ 
+ }
+ 
+	public function mostraHidden(){
+	 	echo '</br>';
+	 	echo implode($this->hidden);
+		echo '</br>';
+		}  
+	
+	public function guardarLletra(){
+		if(ctype_alpha($this->lletra)){
+			array_push($this->lletres,  $this->lletra); 
+			echo implode($this->lletres);
+			echo '</br>'; 
+		}	
 	}
 	
-function creaHidden($paraula){
-	for($i=0;$i<strlen($paraula);$i++){
-		 $hidden[$i] = ' _ ';
-		 } 
-		 return $hidden;
-	} 
-	
-	function guardarLletra($lletres){
-		$lletra = $_GET["lletra"];
-		array_push($lletres,$lletra); 
-		print_r($lletres);	echo '</br>'; 
-		}
-			
-	function comprovarLletra($paraula,$hidden,$intents) { 
-	$lletra = $_GET["lletra"];
-	//array_push($lletres,$_GET["lletra"]);  //per cada lletra dita comprova si coincideix amb cada lletra de la paraula 
-		for($i=0;$i<strlen($paraula);$i++){
-			if($lletra == $paraula[$i]){
-				//si coincideix mira si ja esta posada al seu lloc a la paraula amagada
-				$hidden[$i] = $lletra;
-				}
-				else{
-				//cada cop que entra una lletra que ja esta dita augmenten els intents
-					$intents ++;
+	public function comprovarLletra(){
+		if(ctype_alpha($this->lletra)){
+			for($i=0;$i<count($this->paraula);$i++){
+				if($this->lletra ==  $this->paraula[$i]){
+					//si coincideix mira si ja esta posada al seu lloc a la paraula amagada
+					$this->hidden[$i] =$this->lletra;
+				}else{
+					if($this->hidden[$i] != $this->paraula[$i]){
+						$this->hidden[$i] = ' _ ';
 					}
-			}
-			
-		
-
-		$intents++;
-
-
-				echo implode($hidden).'</br>';
-				
-				echo 'Intents: '.$intents;
-		
+				}
+			}	
+		echo $this->intents++; //ha d sumar nomes quan la lletra es erronia
 		}
-
-?>
+	}
+	
+}	
 
