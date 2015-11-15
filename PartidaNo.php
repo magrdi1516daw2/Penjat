@@ -1,5 +1,4 @@
 <?php 
-
     	
 	function buscarParaula(){
 		$arxiu = fopen('paraules.txt','r') or die ('error lectura');
