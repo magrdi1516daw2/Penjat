@@ -2,49 +2,54 @@
 session_start();
 
 	function guardarUsuari(){
+		/* $_SESSION['validacio'] = false;
 		if(!empty($_POST["nom"]) || ctype_alpha($_POST["nom"])){
 			$_SESSION['nom']  = $_POST["nom"];
-			$_SESSION['validacio'] = false;
 		}else{	
 			$_SESSION['validacio'] = true;
 		}
 
 		if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
 			$_SESSION['email']  = $_POST["email"];
-			$_SESSION['validacio'] = false;
 		}else{	
 			$_SESSION['validacio'] = true;
 		}
 
-		if(!empty($_POST["password"]) || ctype_alnum( $_POST["password"])){
+		if(!empty($_POST["password"]) || ctype_alnum($_POST["password"])){
 			$_SESSION['contra']  = $_POST["password"];
-			$_SESSION['validacio'] = false;
 		}else{	
 			$_SESSION['validacio'] = true;
-		}
+		}*/
 		$_SESSIO['puntuacio'] = 0;
 		
-		if(isset($_SESSION['nom']) && isset($_SESSION['email']) && isset($_SESSION['contra'])){
+		/*if(isset($_SESSION['nom']) && isset($_SESSION['email']) && isset($_SESSION['contra'])){
 			$_SESSION['dades'] = $_SESSION['nom'].','.$_SESSION['email'].','.$_SESSION['contra'].','.$_SESSIO['puntuacio'];
 				echo $_SESSION['dades'];
 			$_SESSION['usuaris'] = fopen('usuaris.txt','a') or die ('error lectura');
 			fwrite($_SESSION['usuaris'],$_SESSION['dades']);
 			fwrite($_SESSION['usuaris'], PHP_EOL);
 			fclose($_SESSION['usuaris']);
+		}*/
+		
+		if(!empty($_POST["email"]) && !empty($_POST["password"])){
+		$linies = file('usuaris.txt') or die ('Error de lectura');
+		$i=0;
+		foreach($linies as $usuari){
+			$_SESSION['usuari'][$i] =  explode(',',$usuari);
+			$i++;
+			}	
+		print_r($_SESSION['usuari']);
+		$i=0;
+		foreach($_SESSION['usuari'] as $dades){
+			if($dades[1] = $_POST["email"] && $dades[2] = $_POST["password"]){
+				header('Location:jocNo.php');
+			}
+			$i++;
+			}
+			echo 'Error de validació';
 		}
 	}
 	
-	function validarUsuari(){
-		if(isset($_SESSION['validacio']) && $_SESSION['validacio']){
-		echo 'Error de validació';
-		}
-}
-	
-	function redireccionar(){
-		if(!$_SESSION['validacio']){
-			header('Location:jocNo.php');
-	}}
-
 ?>
 
 <html>
@@ -69,9 +74,9 @@ session_start();
 			<input type="submit" name="envia" value="Jugar"/></br>
 			Contrasenya: <input type="password" name="password">
 			<?php guardarUsuari();
-                            validarUsuari();
-                            redireccionar();
-			?>
+			validarUsuari();
+			redireccionar();
+				?>
 
 		</form>
 	</div>
