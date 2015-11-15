@@ -33,7 +33,7 @@
 		if(ctype_alpha($_SESSION['lletra'])){
 			array_push($_SESSION['lletres'], $_SESSION['lletra']);
 			if(count(array_unique($_SESSION['lletres']))<count($_SESSION['lletres'])){
-			// Array té duplicats
+			// Array has duplicates
 			$_SESSION['lletres'] = array_unique($_SESSION['lletres']);
 			$_SESSION['repeticio'] = 'Lletra '.$_SESSION['lletra'].' ja dita.</br>';
 		}
@@ -44,7 +44,8 @@
 	function missatge(){
 		unset($_SESSION['missatge']);
 		if($_SESSION['hidden'] == $_SESSION['paraula'] && $_SESSION['intents']<6){
-		$_SESSION['missatge'] = '</br>Has guanyat!';
+			$_SESSION['puntuacio']+=100;
+		$_SESSION['missatge'] = '</br>Has guanyat! Ara tens '.$_SESSION['puntuacio'].' punts.';
 		}
 		else{
 			if($_SESSION['intents']>=6){
@@ -59,6 +60,23 @@
 			}
 			
 		}	
+		
+	function guardarPuntuacio(){
+		$linies = file('usuaris.txt');
+		$arxivo = fopen('usuaris.txt','w') or die ('Error de lectura');
+		$i=0;
+		foreach($linies as $usuari){
+			$usuari[$i] =  explode(',',$usuari);
+			$i++;
+			}
+		foreach($usuari as $dades){
+				if($dades[0] == $_SESSION['nom']){
+					$dades[3] = $_SESSION['puntuacio'];
+				}
+				fwrite($arxivo,implode(',',$usuari));
+			}		
+			
+		 }
 		
 	function comprovarLletra() { 
 		$_SESSION['lletra'] =  strtolower($_GET["lletra"]);
@@ -81,7 +99,7 @@
 		}
 	return  $_SESSION['hidden'];
 	}
-
+ 
 	
 	function boto(){
 		if(!empty($_SESSION['missatge']) || $_SESSION['intents']>=6){
