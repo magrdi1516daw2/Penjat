@@ -59,7 +59,7 @@
 <html>
 
 <head>
-	<?PHP echo esLletra(); ?>
+	<?PHP esLletra(); ?>
 	<title>Penjat - Jugant</title>
 </head>
 

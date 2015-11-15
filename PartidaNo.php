@@ -1,4 +1,5 @@
 <?php 
+
     	
 	function buscarParaula(){
 		$arxiu = fopen('paraules.txt','r') or die ('error lectura');
@@ -50,9 +51,11 @@
 	return $_SESSION['missatge'];
 }
 		function esLletra(){
-			if(!ctype_alpha($_GET["lletra"])){
-				return '<meta http-equiv="refresh" content="0; url=error.php" />';
+			if(!empty($_GET["lletra"]) && !ctype_alpha($_GET["lletra"])){
+				session_unset();
+				echo '<meta http-equiv="refresh" content="3; url=error.php" />';
 			}
+			
 		}	
 		
 	function comprovarLletra() { 
@@ -86,31 +89,9 @@
 	}
 	
 	function imatge(){
-		switch ($_SESSION['intents']) {
-			case 0:
-				echo '<img id="imatge" src="images/ahorcado0.png">';
-				break;
-			case 1:
-				echo '<img id="imatge" src="images/ahorcado1.png">';
-				break;
-			case 2:
-				echo '<img id="imatge" src="images/ahorcado2.png">';
-				break;
-			case 3:
-				echo '<img id="imatge" src="images/ahorcado3.png">';
-				break;
-			case 4:
-				echo '<img id="imatge" src="images/ahorcado4.png">';
-				break;
-			case 5:
-				echo '<img id="imatge" src="images/ahorcado5.png">';
-				break;
-			case 6:
-				echo '<img id="imatge" src="images/ahorcado6.png">';
-				break;
-		}
+		echo '<img id="imatge" src="images/ahorcado'.$_SESSION['intents'].'.png">';
+
 	}
 
 
 ?>
-
