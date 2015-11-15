@@ -2,28 +2,23 @@
 session_start();
 
 	function guardarUsuari(){
-		/* $_SESSION['validacio'] = false;
+				
 		if(!empty($_POST["nom"]) || ctype_alpha($_POST["nom"])){
 			$_SESSION['nom']  = $_POST["nom"];
-		}else{	
-			$_SESSION['validacio'] = true;
 		}
 
 		if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
 			$_SESSION['email']  = $_POST["email"];
-		}else{	
-			$_SESSION['validacio'] = true;
 		}
 
 		if(!empty($_POST["password"]) || ctype_alnum($_POST["password"])){
 			$_SESSION['contra']  = $_POST["password"];
-		}else{	
-			$_SESSION['validacio'] = true;
-		}*/
+		}
+		
 		$_SESSIO['puntuacio'] = 0;
 		
 		/*if(isset($_SESSION['nom']) && isset($_SESSION['email']) && isset($_SESSION['contra'])){
-			$_SESSION['dades'] = $_SESSION['nom'].','.$_SESSION['email'].','.$_SESSION['contra'].','.$_SESSIO['puntuacio'];
+			$_SESSION['dades'] = $_SESSION['nom'].','.$_SESSION['email'].','.$_SESSION['contra'].','.$_SESSION['puntuacio'];
 				echo $_SESSION['dades'];
 			$_SESSION['usuaris'] = fopen('usuaris.txt','a') or die ('error lectura');
 			fwrite($_SESSION['usuaris'],$_SESSION['dades']);
@@ -38,20 +33,22 @@ session_start();
 			$_SESSION['usuari'][$i] =  explode(',',$usuari);
 			$i++;
 			}	
-		print_r($_SESSION['usuari']);
+		
 		$i=0;
 		foreach($_SESSION['usuari'] as $dades){
-			if($dades[1] = $_POST["email"] && $dades[2] = $_POST["password"]){
+			if($dades[1] == $_POST["email"] && $dades[2] == $_POST["password"]){
+				$_SESSION['nom'] = $dades[0];
+				$_SESSION['puntuacio'] = $dades[3];
 				header('Location:jocNo.php');
 			}
 			$i++;
 			}
-			echo 'Error de validació';
+			echo '</br>Error de validació';
 		}
 	}
 	
 ?>
- 
+
 <html>
 
 <head>
@@ -74,8 +71,6 @@ session_start();
 			<input type="submit" name="envia" value="Jugar"/></br>
 			Contrasenya: <input type="password" name="password">
 			<?php guardarUsuari();
-			validarUsuari();
-			redireccionar();
 				?>
 
 		</form>
