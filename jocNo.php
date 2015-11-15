@@ -1,6 +1,7 @@
 <?PHP
 session_start();
 include 'PartidaNo.php';
+
 ?>
 <html>
 
@@ -21,43 +22,43 @@ include 'PartidaNo.php';
 		<?PHP echo 'Estas jugant com a: '.$_SESSION['nom']; ?>
 	</div>	
 	
-    <?PHP
+<?PHP
 
-    if(!empty($_GET["index"]) && !isset($_SESSION['index'])){
+if(!empty($_GET["index"]) && !isset($_SESSION['index'])){
 	 $_SESSION['index'] = $_GET["index"];
-    }
+}
 
-    if(!empty($_GET["lletra"]) && !isset($_SESSION['lletra'])){
+if(!empty($_GET["lletra"]) && !isset($_SESSION['lletra'])){
 	 $_SESSION['lletra'] = $_GET["lletra"];
-    }
+}
     
 //acció del botó nou joc - reseteja les variables de sessio  
-    if(isset($_GET["reset"])){
-	unset($_SESSION['intents']);
-	//unset($_SESSION['paraula']); 
-	unset($_SESSION['hidden']);
-	unset($_SESSION['lletres']); 
-	unset($_SESSION['repeticio']); 
-	unset($_SESSION['missatge']);
-	$_SESSION['paraula'] = buscarParaula();
-	$_SESSION['hidden'] = creaHidden();
-    }
+	if(isset($_GET["reset"])){
+		unset($_SESSION['intents']);
+		//unset($_SESSION['paraula']); 
+		unset($_SESSION['hidden']);
+		unset($_SESSION['lletres']); 
+		unset($_SESSION['repeticio']); 
+		unset($_SESSION['missatge']);
+		$_SESSION['paraula'] = buscarParaula();
+		$_SESSION['hidden'] = creaHidden();
+	}
 	
-//acció del botó de tornar al index
+ //acció del botó de tornar al index
    if(isset($_SESSION['index'])){
-	session_destroy();
+		session_destroy();
     }
     
 //si no existeix 'paraula' la crea     
-    if(!isset($_SESSION['paraula'])){
-	$_SESSION['paraula'] = buscarParaula();
-	echo implode($_SESSION['paraula']).'<br>';
-    }
-    else {
-	echo 'SENSE CANVI: '.implode($_SESSION['paraula']).'<br>';
-    }
-    
-    comprovarLletra();
+	if(!isset($_SESSION['paraula'])){
+		$_SESSION['paraula'] = buscarParaula();
+		
+		echo implode($_SESSION['paraula']).'<br>';
+	}
+	else {
+		echo 'SENSE CANVI: '.implode($_SESSION['paraula']).'<br>';// print_r($_SESSION['paraula']); echo '</br>';
+   }
+   comprovarLletra();
 ?>
 
 	<div id="imatge">
@@ -65,8 +66,7 @@ include 'PartidaNo.php';
 	</div>
 	
 	<div id="joc">
-	
-        <?PHP 
+		<?PHP 
 	   //guarda la lletra entrada en un array lletres
 	if(!isset($_SESSION['lletres'])){
 		$_SESSION['lletres'] = array();
@@ -87,17 +87,19 @@ include 'PartidaNo.php';
 			
  //si no existeix 'hidden' la crea     
 	if(!isset($_SESSION['hidden'])){
-            $_SESSION['hidden'] = array();
-            $_SESSION['hidden'] = creaHidden();
-	}
+	$_SESSION['hidden'] = array();
+	$_SESSION['hidden'] = creaHidden();
+		}
 
 	echo implode($_SESSION['hidden']); echo '</br>';
 	echo 'Intents: '.$_SESSION['intents']; 
 	?>
-            
 	</div>	
 		
-
+	<div id="missatge">
+		<?PHP echo missatge(); 
+		guardarPuntuacio();?>
+	</div>
 	
 	<div id="formulari">
 		<form action="/jocNo.php" method="GET">
@@ -108,9 +110,7 @@ include 'PartidaNo.php';
 		</form>
 	</div>
 	
-	<div id="missatge">
-		<?PHP echo missatge(); ?>
-	</div>
+
 
 </body>
 </html>
