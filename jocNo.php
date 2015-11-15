@@ -1,7 +1,6 @@
 <?PHP
 session_start();
 include 'PartidaNo.php';
-
 ?>
 <html>
 
@@ -13,16 +12,16 @@ include 'PartidaNo.php';
 <body>
 	
 	<div id="index">
-		<form action="login.php" method="POST">
+		<form action="index.php" method="POST">
 			<input type="submit" name="index" value="Tornar a lapàgina principal"/>
 		</form>
 	</div>
 	
-			
+	<div id="benvinguda">
+		<?PHP echo 'Estas jugant com a: '.$_SESSION['nom']; ?>
+	</div>	
+	
     <?PHP
-    if(!empty($_GET["reset"]) && !isset($_SESSION['reset'])){
-	 $_SESSION['reset'] = $_GET["reset"];
-    }
 
     if(!empty($_GET["index"]) && !isset($_SESSION['index'])){
 	 $_SESSION['index'] = $_GET["index"];
@@ -32,9 +31,8 @@ include 'PartidaNo.php';
 	 $_SESSION['lletra'] = $_GET["lletra"];
     }
     
-    
 //acció del botó nou joc - reseteja les variables de sessio  
-    if(isset($_SESSION['reset'])){
+    if(isset($_GET["reset"])){
 	unset($_SESSION['intents']);
 	//unset($_SESSION['paraula']); 
 	unset($_SESSION['hidden']);
@@ -45,8 +43,8 @@ include 'PartidaNo.php';
 	$_SESSION['hidden'] = creaHidden();
     }
 	
- //acció del botó de tornar al index
-    if(isset($_SESSION['index'])){
+//acció del botó de tornar al index
+   if(isset($_SESSION['index'])){
 	session_destroy();
     }
     
@@ -56,54 +54,51 @@ include 'PartidaNo.php';
 	echo implode($_SESSION['paraula']).'<br>';
     }
     else {
-	echo 'SENSE CANVI: '.implode($_SESSION['paraula']).'<br>';// print_r($_SESSION['paraula']); echo '</br>';
+	echo 'SENSE CANVI: '.implode($_SESSION['paraula']).'<br>';
     }
-    ?>
-	<div id="benvinguda">
-		<?PHP echo 'Estas jugant com a: '.$_SESSION['nom']; ?>
-	</div>
     
+    comprovarLletra();
+?>
+
 	<div id="imatge">
 		<?PHP imatge(); ?>
 	</div>
 	
 	<div id="joc">
 	
-    <?PHP 
-        
-//guarda la lletra entrada en un array lletres
-    if(!isset($_SESSION['lletres'])){
-        $_SESSION['lletres'] = array();
-        $_SESSION['lletres'] = guardarLletra();
-    }else{
-        echo 'no la crea';$_SESSION['lletres'] = guardarLletra();
-    }
-    echo 'Lletres dites: '.implode($_SESSION['lletres']);echo '<br>'; print_r($_SESSION['lletres']);echo '<br>';
-    if(!empty($_SESSION['repeticio'])){
-	echo $_SESSION['repeticio']; 
-	$_SESSION['repeticio'] = '';
-    }
+        <?PHP 
+	   //guarda la lletra entrada en un array lletres
+	if(!isset($_SESSION['lletres'])){
+		$_SESSION['lletres'] = array();
+		$_SESSION['lletres'] = guardarLletra();
+	}else{
+		$_SESSION['lletres'] = guardarLletra();
+	}
+	echo 'Lletres dites: '.implode('  ',$_SESSION['lletres']);echo '<br>';
+	if(!empty($_SESSION['repeticio'])){
+		echo $_SESSION['repeticio']; 
+		$_SESSION['repeticio'] = '';
+		}
 
-    comprovarLletra();
-	
 //controlador dels intents/errors  
-    if(!isset($_SESSION['intents'])){
-	  $_SESSION['intents'] = 2;
-    }
-
+	if(!isset($_SESSION['intents'])){
+	  $_SESSION['intents'] = 0;
+	}	
+			
  //si no existeix 'hidden' la crea     
-    if(!isset($_SESSION['hidden'])){
-        $_SESSION['hidden'] = array();
-        $_SESSION['hidden'] = creaHidden();
-    }
+	if(!isset($_SESSION['hidden'])){
+            $_SESSION['hidden'] = array();
+            $_SESSION['hidden'] = creaHidden();
+	}
 
-    echo implode($_SESSION['hidden']); echo '</br>';
-    echo 'Intents: '.$_SESSION['intents']; 
-
-    ?>
+	echo implode($_SESSION['hidden']); echo '</br>';
+	echo 'Intents: '.$_SESSION['intents']; 
+	?>
             
-	</div>	<!-- fi div JOC -->
+	</div>	
 		
+
+	
 	<div id="formulari">
 		<form action="/jocNo.php" method="GET">
 			Lletra: 
@@ -114,7 +109,7 @@ include 'PartidaNo.php';
 	</div>
 	
 	<div id="missatge">
-            <?PHP echo missatge(); ?>
+		<?PHP echo missatge(); ?>
 	</div>
 
 </body>

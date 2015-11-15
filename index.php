@@ -69,9 +69,9 @@ session_start();
 			<input type="submit" name="envia" value="Jugar"/></br>
 			Contrasenya: <input type="password" name="password">
 			<?php guardarUsuari();
-			validarUsuari();
-			redireccionar();
-				?>
+                            validarUsuari();
+                            redireccionar();
+			?>
 
 		</form>
 	</div>
